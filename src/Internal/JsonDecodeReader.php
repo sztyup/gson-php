@@ -131,6 +131,10 @@ final class JsonDecodeReader extends JsonReader
     public function nextBoolean(): bool
     {
         $this->pathIndices[$this->pathIndex]++;
+        
+        if ($this->stackTypes[$this->stackSize - 1] == JsonToken::NUMBER) {
+            return boolval($this->stack[--$this->stackSize]);
+        }
 
         if ($this->stackTypes[$this->stackSize - 1] !== JsonToken::BOOLEAN) {
             $this->assertionFailed(JsonToken::BOOLEAN);
