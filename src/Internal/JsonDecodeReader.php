@@ -147,6 +147,10 @@ final class JsonDecodeReader extends JsonReader
     public function nextDouble(): float
     {
         $this->pathIndices[$this->pathIndex]++;
+        
+        if ($this->stackTypes[$this->stackSize - 1] == JsonToken::STRING) {
+            return floatval($this->stack[--$this->stackSize]);
+        }
 
         if ($this->stackTypes[$this->stackSize - 1] !== JsonToken::NUMBER) {
             $this->assertionFailed(JsonToken::NUMBER);
